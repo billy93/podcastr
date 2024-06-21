@@ -14,13 +14,28 @@ import React from 'react'
 const PodcastDetails = ({ params: { podcastId } }: { params: { podcastId: Id<'podcasts'> } }) => {
   const { user } = useUser();
 
-  const podcast = useQuery(api.podcasts.getPodcastById, { podcastId })
+  //const podcast = useQuery(api.podcasts.getPodcastById, { podcastId })
+  const podcast = {
+    "_id":"1" as Id<"podcasts">,
+    "podcastTitle":"Test",
+    "podcastDescription": "Welcome to the `Javascript Jungle Podcast`! Join us as we navigate through the dense and ever-evolving world of JavaScript. Whether you're a seasoned developer or just starting your journey, our podcast has something for everyone. ",
+    "imageUrl":"/images/Podcast-iNfo.png",
+    "authorId":"user_2iCBjSd1oegiMc01jARWRXn6iib",
+    "views":100,
+    "audioUrl":"https://samplelib.com/lib/preview/mp3/sample-15s.mp3", 
+    "author":"1", 
+    "imageStorageId":"1" as Id<"_storage">, 
+    "audioStorageId":"1" as Id<"_storage">, 
+    "authorImageUrl":"/images/Podcast-iNfo.png",
+    "voicePrompt":"test",
+    "imagePrompt":"test"
+  }
 
-  const similarPodcasts = useQuery(api.podcasts.getPodcastByVoiceType, { podcastId })
-
+  //const similarPodcasts = useQuery(api.podcasts.getPodcastByVoiceType, { podcastId })
+  const similarPodcasts: any = [];
   const isOwner = user?.id === podcast?.authorId;
 
-  if(!similarPodcasts || !podcast) return <LoaderSpinner />
+  //if(!similarPodcasts || !podcast) return <LoaderSpinner />
 
   return (
     <section className="flex w-full flex-col">
@@ -62,7 +77,7 @@ const PodcastDetails = ({ params: { podcastId } }: { params: { podcastId: Id<'po
 
         {similarPodcasts && similarPodcasts.length > 0 ? (
           <div className="podcast_grid">
-            {similarPodcasts?.map(({ _id, podcastTitle, podcastDescription, imageUrl }) => (
+            {similarPodcasts?.map(({ _id, podcastTitle, podcastDescription, imageUrl }: any) => (
               <PodcastCard 
                 key={_id}
                 imgUrl={imageUrl as string}

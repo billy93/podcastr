@@ -5,7 +5,15 @@ import { api } from "@/convex/_generated/api";
 import LoaderSpinner from '@/components/LoaderSpinner';
 
 const Home = () => {
-  const trendingPodcasts = useQuery(api.podcasts.getTrendingPodcasts);
+//  const trendingPodcasts: any = useQuery(api.podcasts.getTrendingPodcasts);
+  const trendingPodcasts: any = [
+    {
+      "_id":"1",
+      "podcastTitle":"Test",
+      "podcastDescription": "Test",
+      "imageUrl":"/images/Podcast-iNfo.png"
+    }
+  ]
 
   if(!trendingPodcasts) return <LoaderSpinner />
   
@@ -15,7 +23,7 @@ const Home = () => {
         <h1 className="text-20 font-bold text-white-1">Trending Podcasts</h1>
 
         <div className="podcast_grid">
-          {trendingPodcasts?.map(({ _id, podcastTitle, podcastDescription, imageUrl }) => (
+          {trendingPodcasts?.map(({ _id, podcastTitle, podcastDescription, imageUrl }: any) => (
             <PodcastCard 
               key={_id}
               imgUrl={imageUrl as string}
