@@ -21,10 +21,9 @@ const GenerateThumbnail = ({ setImage, setImageStorageId, image, imagePrompt, se
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
   const { startUpload } = useUploadFiles(generateUploadUrl)
   const getImageUrl = useMutation(api.podcasts.getUrl);
-  const handleGenerateThumbnail = useAction(api.openai.generateThumbnailAction)
+  // const handleGenerateThumbnail = useAction(api.openai.generateThumbnailAction)
 
   const handleImage = async (blob: Blob, fileName: string) => {
-    setIsImageLoading(true);
     setImage('');
 
     try {
@@ -47,14 +46,23 @@ const GenerateThumbnail = ({ setImage, setImageStorageId, image, imagePrompt, se
     }
   }
 
+  
   const generateImage = async () => {
     try {
-      const response = await handleGenerateThumbnail({ prompt: imagePrompt });
-      const blob = new Blob([response], { type: 'image/png' });
+      setIsImageLoading(true);
+    
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/huggingface`, { 
+        method: 'POST',
+        body: JSON.stringify({
+            input: imagePrompt,
+        })
+      })
+
+      const blob = await response.blob();
       handleImage(blob, `thumbnail-${uuidv4()}`);
     } catch (error) {
       console.log(error)
-      toast({ title: 'Error generating thumbnail', variant: 'destructive'})
+      // toast({ title: 'Error generating thumbnail', variant: 'destructive'})
     }
   }
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,7 +121,7 @@ const GenerateThumbnail = ({ setImage, setImageStorageId, image, imagePrompt, se
             />
           </div>
           <div className="w-full max-w-[200px]">
-          <Button type="submit" className="text-16 bg-orange-1 py-4 font-bold text-white-1" onClick={generateImage}>
+          <Button type="button" className="text-16 bg-orange-1 py-4 font-bold text-white-1" onClick={generateImage}>
             {isImageLoading ? (
               <>
                 Generating

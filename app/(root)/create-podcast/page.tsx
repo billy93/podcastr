@@ -36,7 +36,7 @@ import { api } from "@/convex/_generated/api"
 import { useRouter } from "next/navigation"
 
 // const voiceCategories = ['alloy', 'shimmer', 'nova', 'echo', 'fable', 'onyx'];
-const voiceCategories = ['Drew', "Rachel"];
+const voiceCategories = ['Drew', "Rachel", "Sarah"];
 
 const formSchema = z.object({
   podcastTitle: z.string().min(2),
